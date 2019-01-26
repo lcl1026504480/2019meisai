@@ -126,6 +126,7 @@ for i = 1:maxgen
 end
 %% VII.Êä³ö½á¹û
 [fitnesszbest, zbest]
+global pf
 figure
 plot(yy)
 title('Optimal Individual Fitness','fontsize',12);
@@ -137,14 +138,16 @@ zx=zbest(1:3);
 zy=zbest(4:6);
 scatter(py,px,'filled')
 xlabel('Latitude','fontsize',12);ylabel('Longitude','fontsize',12);
-for i=1:3
-    if sum(dt(i,:))~=0
-        hold on
-        scatter(zy(i),zx(i),'filled')
+if sum(pf)==5
+    for i=1:3
+        if sum(dt(i,:))~=0
+            hold on
+            scatter(zy(i),zx(i),'filled')
+        end
     end
+    grid
+    legend('Delivery Locations','cargo container1','cargo container2','cargo container3')
 end
-grid
-legend('Delivery Locations','cargo container1','cargo container2','cargo container3')
 for i=1:5
     text(py(i)+0.01,px(i)+0.01,['p',num2str(i)])
 end

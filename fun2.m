@@ -18,6 +18,7 @@ for i=1:3
         pid(i,j)=dis(x(i),x(i+3),px(j),py(j));
     end
 end
+global pf
 pf=zeros(1,5);%投放点标志
 global dt
 dt=zeros(3,5);%ISO和无人机类型的关系
