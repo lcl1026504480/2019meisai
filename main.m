@@ -1,8 +1,8 @@
 %% I. 清空环境
 clc
 clear
-global px
-global py
+py=[65.65 66.03 66.07 66.16 66.73];%投放点经度
+px=[18.33 18.22 18.44 18.40 18.47];%投放点纬度
 pc=[5 7 4 12 2];%投放点物资负重
 dm=[3.5 8 14 11 15 22 20];%飞机最大负重
 p1=[0 1 1 1 1 1 0];
@@ -98,12 +98,13 @@ title('Optimal Individual Fitness','fontsize',12);
 xlabel('iterations','fontsize',12);ylabel('fitness','fontsize',12);
 figure
 global dt
+global pf
 dt
 zx=zbest(1:3);
 zy=zbest(4:6);
 scatter(py,px,'filled')
 xlabel('Latitude','fontsize',12);ylabel('Longitude','fontsize',12);
-if sum(ref)==5
+if sum(pf)==5
     for i=1:3
         if sum(dt(i,:))~=0
             hold on

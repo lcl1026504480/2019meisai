@@ -1,10 +1,21 @@
 %% I. 清空环境
 clc
 clear
-global px
-global py
+py=[65.65 66.03 66.07 66.16 66.73];%投放点经度
+px=[18.33 18.22 18.44 18.40 18.47];%投放点纬度
+R=6371;%地球半径
+dx=R*pi/180;%纬度单位距离
+dy=2*R*cosd(mean(px))*pi/360;%经度单位距离
 pc=[5 7 4 12 2];%投放点物资负重
 pc2=zeros(5,5);
+dp=zeros(5,5);%投放点之间的距离
+dis=@(x1,y1,x2,y2) sqrt(((x1-x2)*dx)^2+((y1-y2)*dy)^2);%计算距离函数
+for i=1:5
+    for j=1:i
+        dp(i,j)=dis(px(i),py(i),px(j),py(j));
+        dp(j,i)=dp(i,j);
+    end
+end 
 for i=1:4
     for j=i+1:5
         pc2(i,j)=pc(i)+pc(j);%如果无人机携带两个地点的物资
@@ -78,7 +89,7 @@ for i = 1:sizepop
     pop(i,4:6) = 0.8*rands(1,3)+66.4; %初始种群
     V(i,:) = rands(1,6);  %初始化速度
     % 计算适应度
-    fitness(i) = fun2(pop(i,:),pc2,dm,pp2);   %染色体的适应度
+    fitness(i) = fun2(pop(i,:),pc2,dm,pp2,dp);   %染色体的适应度
 end
 
 %% V. 个体极值和群体极值
@@ -106,7 +117,7 @@ for i = 1:maxgen
         pop(j,pop(j,4:6)>popymax) = popymax;
         pop(j,pop(j,4:6)<popymin) = popymin;
         % 适应度值更新
-        fitness(j) = fun2(pop(j,:),pc2,dm,pp2); 
+        fitness(j) = fun2(pop(j,:),pc2,dm,pp2,dp); 
     end
     
     for j = 1:sizepop  
