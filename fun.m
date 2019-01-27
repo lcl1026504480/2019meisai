@@ -1,4 +1,4 @@
-function y = fun(x,pc,dm,p)
+function [y,pf,dt] = fun(x,pc,dm,p,jindu,weidu)
 py=[65.65 66.03 66.07 66.16 66.73];%投放点经度
 px=[18.33 18.22 18.44 18.40 18.47];%投放点纬度
 dd=[70/3 158/3 112/3 18 15 158/5 17.07];%无人机最大飞行距离
@@ -16,9 +16,7 @@ for i=1:3
         pid(i,j)=dis(x(i),x(i+3),px(j),py(j));
     end
 end
-global pf
 pf=zeros(1,5);%投放点标志
-global dt
 dt=zeros(3,5);%ISO和无人机类型的关系
 
 % for i=1:5
@@ -33,7 +31,7 @@ dt=zeros(3,5);%ISO和无人机类型的关系
                 if p(j,k)==1 && pid(i,j)<f(dd(k),dm(k),pc(j),0.4)
                     [m,mi]=min(pid(:,j));
                     if m+pid(i,j)<f(dd(k),dm(k),pc(j),0.4)
-                        dt(i,j)=k;
+                        dt(i,j)=k*10+mi;
                         pf(j)=1;
                         sod=sod+m+pid(i,j);
                     end
@@ -41,11 +39,14 @@ dt=zeros(3,5);%ISO和无人机类型的关系
             end
         end
     end
-    if sum(pf)==5
-        y=1/sod;
-    else
-        y=0;
-    end
+zx=x(1:3);
+zy=x(4:6);
+ip=inpolygon(zy,zx,jindu,weidu);
+if min(min(pid))>3
+    y=1000/sod*fix(sum(pf)/5)*fix(sum((ip/3)));
+else
+    y=0;
+end
 end
 %             
 % scatter(px,py,'filled')
