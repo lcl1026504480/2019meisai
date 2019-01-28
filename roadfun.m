@@ -4,6 +4,7 @@ function [y,pf,dt] = roadfun(x,pc,dm,p,jindu,weidu,Rin)
                                     global x1
                                     global x2
                                     global y2
+                                    global w
 py=-[65.65 66.03 66.07 66.16 66.73];%投放点经度
 px=[18.33 18.22 18.44 18.40 18.47];%投放点纬度
 dd=[70/3 158/3 112/3 18 15 158/5 17.07];%无人机最大飞行距离
